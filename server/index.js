@@ -38,6 +38,26 @@ app.post("/create", (req, res) => {
 
 
 
+app.get("/employees", (req, res) => {
+  
+  db.query(
+    "SELECT * FROM employees",
+   
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+
+
+
+
+
 app.listen(port, () => {
   console.log("Your server is running");
 });
