@@ -2,6 +2,12 @@ const express = require("express");
 const app = express();
 const port = 3001;
 const mysql = require("mysql");
+const cors = require("cors"); //allows me to use my own api
+
+app.use(cors());
+
+app.use(express.json());
+
 const db = mysql.createConnection({
   user: "root",
   host: "localhost",
@@ -28,6 +34,9 @@ app.post("/create", (req, res) => {
     }
   );
 });
+
+
+
 
 app.listen(port, () => {
   console.log("Your server is running");
