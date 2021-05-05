@@ -96,3 +96,12 @@ table.employee-table tr:not(:first-child){
 .employee-table .employee-info {
   text-align: center;
 }
+
+button.edit-employee{
+  background: rgb(244, 195, 112);
+  border-radius: 6px;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  font-weight: bolder;
+}

@@ -47,6 +47,18 @@ function App() {
       });
   };
 
+
+  const editEmployees = () => {
+    axios
+      .put("http://localhost:3001/edit")
+      .then((response) => {
+        setEmployeeList(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   useEffect(() => {
     getEmployees();
   });
@@ -110,6 +122,7 @@ function App() {
             <th>Country</th>
             <th>Position</th>
             <th>Wage</th>
+            <th></th>
           </tr>
           {employeeList.map((val, key) => {
             return (
@@ -119,6 +132,8 @@ function App() {
                 <td id="country">{val.country}</td>
                 <td id="position">{val.position}</td>
                 <td id="wage">{val.wage}</td>
+                <td><button className="edit-employee">Edit</button></td>
+
               </tr>
             );
           })}
