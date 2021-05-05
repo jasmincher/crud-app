@@ -53,7 +53,9 @@ function App() {
 
   return (
     <div className="App">
+      <div className="divider"></div>
       <div className="information">
+        <h2>Add Employee</h2>
         <label>Name:</label>
         <input
           type="text"
@@ -99,18 +101,28 @@ function App() {
         {/* <button onClick={getEmployees}> Show Employees</button> */}
       </div>
 
-      <div className="employee-list">
-        {employeeList.map((val, key) => {
-          return (
-            <div className="list">
-              <h4 id="name">{val.name} </h4>
-              <h4 id="age">{val.age}</h4>
-              <h4 id="country">{val.country}</h4>
-              <h4 id="position">{val.position}</h4>
-              <h4 id="wage">{val.wage}</h4>
-            </div>
-          );
-        })}
+      <div className="list">
+        <h2>Employee List</h2>
+        <table className="employee-table">
+          <tr className="row-title">
+            <th>Name</th>
+            <th>Age</th>
+            <th>Country</th>
+            <th>Position</th>
+            <th>Wage</th>
+          </tr>
+          {employeeList.map((val, key) => {
+            return (
+              <tr className="employee-info">
+                <td id="name">{val.name}</td>
+                <td id="age">{val.age}</td>
+                <td id="country">{val.country}</td>
+                <td id="position">{val.position}</td>
+                <td id="wage">{val.wage}</td>
+              </tr>
+            );
+          })}
+        </table>
       </div>
     </div>
   );
