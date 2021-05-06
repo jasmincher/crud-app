@@ -105,3 +105,12 @@ button.edit-employee{
   padding: 5px 10px;
   font-weight: bolder;
 }
+
+
+#modal{
+  display: none;
+
+  background: pink;
+  width: 300px;
+  margin: auto;
+}

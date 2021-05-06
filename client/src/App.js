@@ -2,6 +2,10 @@ import "./App.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+import "antd/dist/antd.css";
+import { Modal, Button } from "antd";
+import ListBody from "antd/lib/transfer/ListBody";
+
 function App() {
   const [name, setName] = useState("");
   const [age, setAge] = useState(0);
@@ -9,6 +13,43 @@ function App() {
   const [position, setPosition] = useState("");
   const [wage, setWage] = useState(0);
   const [employeeList, setEmployeeList] = useState([]);
+
+  const [newName, setNewName] = useState("");
+  const [newAge, setNewAge] = useState(0);
+  const [newCountry, setNewCountry] = useState("");
+  const [newPosition, setNewPosition] = useState("");
+  const [newWage, setNewWage] = useState(0);
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const [selectedData, setSelectedData] = useState({
+    name: "",
+    age: 0,
+    country: "",
+    position: "",
+    wage: 0,
+  });
+
+  const showModal = (val) => {
+    setIsModalVisible(true);
+    setSelectedData({
+      name: val.name,
+      age: val.age,
+      country: val.country,
+      position: val.position,
+      wage: val.wage,
+    });
+
+    setNewName(val.name);
+    setNewAge(val.age);
+    setNewCountry(val.country);
+    setNewPosition(val.position);
+    setNewWage(val.wage);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
 
   const addEmployee = () => {
     axios
@@ -47,16 +88,39 @@ function App() {
       });
   };
 
-
-  const editEmployees = () => {
+  const editEmployees = (id) => {
     axios
-      .put("http://localhost:3001/edit")
+      .put("http://localhost:3001/edit", {
+        name: newName,
+        age: newAge,
+        country: newCountry,
+        position: newPosition,
+        wage: newWage,
+        id: id,
+      })
       .then((response) => {
-        setEmployeeList(response.data);
+        setEmployeeList(
+          employeeList.map((val) => {
+            return val.id == id
+              ? {
+                  id: val.id,
+                  name: newName,
+                  country: newCountry,
+                  position: newPosition,
+                  wage: newWage,
+                }
+              : val;
+          })
+        );
       })
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const handleOk = (id) => {
+    setIsModalVisible(false);
+    editEmployees(id);
   };
 
   useEffect(() => {
@@ -109,8 +173,6 @@ function App() {
         ></input>
 
         <button onClick={addEmployee}>Add Employee</button>
-
-        {/* <button onClick={getEmployees}> Show Employees</button> */}
       </div>
 
       <div className="list">
@@ -124,16 +186,76 @@ function App() {
             <th>Wage</th>
             <th></th>
           </tr>
+
           {employeeList.map((val, key) => {
             return (
               <tr className="employee-info">
-                <td id="name">{val.name}</td>
-                <td id="age">{val.age}</td>
+                <td id="name">{val.name} </td>
+                <td id="age">{val.age} </td>
                 <td id="country">{val.country}</td>
                 <td id="position">{val.position}</td>
                 <td id="wage">{val.wage}</td>
-                <td><button className="edit-employee">Edit</button></td>
+                <td></td>
+                <button
+                  className="edit-employee"
+                  id={key}
+                  onClick={() => showModal(val)}
+                >
+                  Edit
+                </button>
 
+                <Modal
+                  title="Basic Modal"
+                  visible={isModalVisible}
+                  onOk={() => handleOk(val.id)}
+                  onCancel={handleCancel}
+                  okText="Accept"
+                >
+                  <label>Name:</label>
+                  <input
+                    type="text"
+                    onChange={(e) => {
+                      setNewName(e.target.value);
+                    }}
+                    defaultValue={selectedData.name}
+                  ></input>
+
+                  <label>Age:</label>
+                  <input
+                    type="number"
+                    onChange={(e) => {
+                      setNewAge(e.target.value);
+                    }}
+                    defaultValue={selectedData.age}
+                  ></input>
+
+                  <label>Country:</label>
+                  <input
+                    type="text"
+                    onChange={(e) => {
+                      setNewCountry(e.target.value);
+                    }}
+                    defaultValue={selectedData.country}
+                  ></input>
+
+                  <label>Position:</label>
+                  <input
+                    type="text"
+                    onChange={(e) => {
+                      setNewPosition(e.target.value);
+                    }}
+                    defaultValue={selectedData.position}
+                  ></input>
+
+                  <label>Wage (year):</label>
+                  <input
+                    type="number"
+                    onChange={(e) => {
+                      setNewWage(e.target.value);
+                    }}
+                    defaultValue={selectedData.wage}
+                  ></input>
+                </Modal>
               </tr>
             );
           })}
@@ -143,3 +265,6 @@ function App() {
   );
 }
 export default App;
+
+{
+}
